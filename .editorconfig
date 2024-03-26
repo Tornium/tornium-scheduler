@@ -5,6 +5,6 @@ end_of_line = true
 insert_final_newline = true
 charset = utf-8
 
-[*.{cpp}]
+[*.{cpp,hpp,h}]
 indent_style = space
 indent_size = 4

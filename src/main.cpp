@@ -1,8 +1,7 @@
+#include "server.h"
 #include <boost/asio/steady_timer.hpp>
 #include <boost/system/detail/error_code.hpp>
 #include <iostream>
-
-#include "datagram_server.cpp"
 
 #if not defined(BOOST_ASIO_HAS_LOCAL_SOCKETS)
 # error Local sockets not available on this platform.
@@ -21,7 +20,8 @@ void tick(const boost::system::error_code&) {
 
 int main() {
     ::unlink("/tmp/scheduler.sock");
-    datagram_server server(io_context);
+    server::DatagramServer s(io_context);
+    s.do_receive();
 
     timer.async_wait(tick);
 
