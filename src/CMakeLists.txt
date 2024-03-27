@@ -1,6 +1,8 @@
 find_package(Boost REQUIRED)
 
-add_executable(scheduler main.cpp server.cpp server.h)
+file(GLOB SOURCES *.cpp)
+
+add_executable(scheduler ${SOURCES})
 target_link_libraries(scheduler ${Boost_LIBRARIES})
 target_compile_options(scheduler PRIVATE -Wall -Wextra -Wshadow -Wconversion -Wsign-conversion -Wunused-parameter -Wno-long-long -pedantic )
 
