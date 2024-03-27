@@ -13,8 +13,8 @@
 #endif
 
 using namespace boost;
-using namespace server;
 
+namespace server {
 DatagramServer::DatagramServer(boost::asio::io_context& io_context) : socket_(io_context, boost::asio::local::datagram_protocol::endpoint("/tmp//scheduler.sock")) {};
 void DatagramServer::do_receive() {
     socket_.async_receive_from(
@@ -35,4 +35,4 @@ void DatagramServer::do_send(std::size_t length) {
         }
     );
 }
-
+}
