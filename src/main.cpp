@@ -1,4 +1,5 @@
 #include "server.h"
+#include "network_request.h"
 #include <boost/asio/steady_timer.hpp>
 #include <boost/system/detail/error_code.hpp>
 #include <iostream>
@@ -8,12 +9,14 @@
 #endif
 
 using namespace boost;
+using namespace server;
+using namespace request;
 
 boost::asio::io_context io_context;
 boost::asio::steady_timer timer(io_context, boost::asio::chrono::seconds(5));
 
 void tick(const boost::system::error_code&) {
-    std::cout << "tick" << std::endl;
+    std::cout << "tick :: " << request::requests_count() << std::endl;
     timer.expires_at(timer.expires_at() + boost::asio::chrono::seconds(5));
     timer.async_wait(tick);
 }

@@ -14,11 +14,13 @@ public:
     void do_receive();
     void do_send(std::size_t length);
 
+    // TODO: Make data_ use max_length in its constructor
+    const static size_t max_length;
+    char data_[128];
+
 private:
     boost::asio::local::datagram_protocol::socket socket_;
     boost::asio::local::datagram_protocol::endpoint sender_endpoint_;
-    enum { max_length = 128 };
-    char data_[max_length];
 };
 }
 
