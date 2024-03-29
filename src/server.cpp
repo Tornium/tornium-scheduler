@@ -30,22 +30,21 @@ DatagramServer::DatagramServer(boost::asio::io_context &io_context)
 void DatagramServer::do_receive() {
     socket_.async_receive_from(boost::asio::buffer(data_, server::DatagramServer::max_length), sender_endpoint_,
                                [this](boost::system::error_code error, std::size_t bytes_received) {
-                                   if (!error and bytes_received > 0) {
-                                       request::NetworkRequest r = request::parse_request(data_, bytes_received);
+        if (!error and bytes_received > 0) {
+            request::NetworkRequest r = request::parse_request(data_, bytes_received);
 
-                                       std::cout << "Received request... " << r.endpoint << " :: " << (int)r.nice
-                                                 << " :: " << r.user << std::endl;
+            std::cout << "Received request... " << r.endpoint << " :: " << (int)r.nice << " :: " << r.user << std::endl;
 
-                                       if (request::enqueue_request(r)) {
-                                           std::cout << "Request enqueued" << std::endl;
-                                           bucket::insert_request(r);
-                                       }
+            if (request::enqueue_request(r)) {
+                std::cout << "Request enqueued" << std::endl;
+                bucket::insert_request(r);
+            }
 
-                                       do_send();
-                                   } else {
-                                       do_receive();
-                                   }
-                               });
+            do_send();
+        } else {
+            do_receive();
+        }
+    });
 }
 void DatagramServer::do_send() {
     socket_.async_send_to(boost::asio::buffer("ACK", 3), sender_endpoint_,

@@ -23,8 +23,8 @@ bucket::insertion_status RequestBucket::try_emplace(request::NetworkRequest &req
             // TODO: Switch sort to priority from niceness
             std::sort(bucket_requests.begin(), bucket_requests.end(),
                       [](const request::NetworkRequest first, const request::NetworkRequest second) {
-                          return first.nice < second.nice;
-                      });
+                return first.nice < second.nice;
+            });
 
             if (bucket_requests.back().request_type == request::nice_type::user_request) {
                 bucket_requests.pop_back();
