@@ -12,7 +12,6 @@ class DatagramServer {
     DatagramServer(boost::asio::io_context& io_context);
 
     void do_receive();
-    void do_send();
 
     // TODO: Make data_ use max_length in its constructor
     const static size_t max_length;

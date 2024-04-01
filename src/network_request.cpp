@@ -3,15 +3,12 @@
 #include <iostream>
 #include <map>
 #include <optional>
+#include <ostream>
 
 #include "bucket.h"
 #include "server.h"
 
-using namespace request;
-using namespace server;
-using namespace bucket;
-
-static std::multimap<std::string, request::NetworkRequest> requests_map = {};
+static std::multimap<std::string, request::NetworkRequest &> requests_map = {};
 
 namespace request {
 request::NetworkRequest parse_request(char *data_, const size_t &bytes_received) {
@@ -53,20 +50,20 @@ request::NetworkRequest parse_request(char *data_, const size_t &bytes_received)
     }
 
     request::NetworkRequest request_ = {
-        niceness,                                    // niceness
-        endpoint,                                    // endpoint
-        endpoint.substr(1, endpoint.find('?') - 1),  // endpoint_id
-        user,                                        // user ID
-        std::vector<NetworkRequest>{},               // linked requests
-        std::time(0),                                // requestReceived
-        std::nullopt,                                // requestScheduled
-        parsed_request_type,                         // request_type
+        niceness,                                // niceness
+        endpoint,                                // endpoint
+        endpoint.substr(0, endpoint.find('?')),  // endpoint_id
+        user,                                    // user ID
+        std::vector<NetworkRequest>{},           // linked requests
+        std::time(0),                            // requestReceived
+        std::nullopt,                            // requestScheduled
+        parsed_request_type,                     // request_type
     };
 
     return request_;
 }
 
-bool enqueue_request(request::NetworkRequest request_) {
+bool enqueue_request(request::NetworkRequest &request_) {
     if (requests_map.count(request_.endpoint_id) > 0) {
         auto existing_keys_range = requests_map.equal_range(request_.endpoint_id);
 
@@ -82,4 +79,6 @@ bool enqueue_request(request::NetworkRequest request_) {
 }
 
 size_t requests_count() { return requests_map.size(); }
+
+void remove_request(std::string request_key) { requests_map.erase(request_key); }
 };  // namespace request

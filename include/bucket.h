@@ -8,7 +8,7 @@
 namespace bucket {
 const static size_t requests_per_bucket = 6;
 const static size_t bucket_interval = 10;
-enum class insertion_status { queued, lazy_insert, immediate_insert };
+enum class insertion_status { queued, immediate_insert };
 
 class RequestBucket {
    public:

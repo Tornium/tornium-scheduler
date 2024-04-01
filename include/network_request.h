@@ -25,9 +25,10 @@ struct NetworkRequest {
 };
 
 NetworkRequest parse_request(char* data_, const size_t& bytes_received);
-bool enqueue_request(request::NetworkRequest request_);
+bool enqueue_request(request::NetworkRequest& request_);
 
 size_t requests_count();
+void remove_request(std::string request_key);
 }  // namespace request
 
 #endif
